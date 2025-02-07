@@ -5,10 +5,10 @@ part 'product_model.g.dart';
 @HiveType(typeId: 0)
 class Product extends HiveObject {
   @HiveField(0)
-  String title;
+  String productName;
 
   @HiveField(1)
-  String code;
+  String productCode;
 
   @HiveField(2)
   String size;
@@ -38,8 +38,8 @@ class Product extends HiveObject {
   String? id;
 
   Product({
-    required this.title,
-    required this.code,
+    required this.productName,
+    required this.productCode,
     required this.size,
     required this.type,
     required this.quantity,
@@ -52,6 +52,6 @@ class Product extends HiveObject {
   });
   @override
   String toString() {
-    return 'Product{title: $title, code: $code, size: $size, type: $type, quantity: $quantity, purchaseRate: $purchaseRate, salesRate: $salesRate, description: $description, category: $category, imagePaths: $imagePaths id: $id}';
+    return 'Product{title: $productName, code: $productCode, size: $size, type: $type, quantity: $quantity, purchaseRate: $purchaseRate, salesRate: $salesRate, description: $description, category: $category, imagePaths: $imagePaths id: $id}';
   }
 }

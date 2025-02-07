@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/AddEdit/add_category.dart';
+import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/AddEdit/Category%20Section/add_category.dart';
 import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/AdeedStock/Product_screen.dart';
 import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/purchase_screen.dart';
 import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/settings.dart';

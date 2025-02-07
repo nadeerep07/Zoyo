@@ -46,7 +46,7 @@ class ProductCarousel extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    product.title,
+                    product.productName,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

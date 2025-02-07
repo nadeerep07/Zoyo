@@ -17,8 +17,8 @@ class ProductAdapter extends TypeAdapter<Product> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Product(
-      title: fields[0] as String,
-      code: fields[1] as String,
+      productName: fields[0] as String,
+      productCode: fields[1] as String,
       size: fields[2] as String,
       type: fields[3] as String,
       quantity: fields[4] as int,
@@ -36,9 +36,9 @@ class ProductAdapter extends TypeAdapter<Product> {
     writer
       ..writeByte(11)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.productName)
       ..writeByte(1)
-      ..write(obj.code)
+      ..write(obj.productCode)
       ..writeByte(2)
       ..write(obj.size)
       ..writeByte(3)

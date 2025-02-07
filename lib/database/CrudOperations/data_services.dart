@@ -1,48 +1,84 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:zoyo_bathware/database/category_model.dart';
 import 'package:zoyo_bathware/database/product_model.dart';
 
-class ProductDB {
-  static const String _boxName = 'productBox';
+class DatabaseHelper {
+  static const String productBox = 'products';
+  static const String categoryBox = 'categories';
 
-  /// Open the Hive box
-  static Future<Box<Product>> _openBox() async {
-    return await Hive.openBox<Product>(_boxName);
+  static final ValueNotifier<List<Product>> productsNotifier =
+      ValueNotifier([]);
+  static final ValueNotifier<List<Category>> categoriesNotifier =
+      ValueNotifier([]);
+
+  static Future<void> openBoxes() async {
+    if (!Hive.isBoxOpen(productBox)) {
+      await Hive.openBox<Product>(productBox);
+    }
+    if (!Hive.isBoxOpen(categoryBox)) {
+      await Hive.openBox<Category>(categoryBox);
+    }
+    productsNotifier.value = Hive.box<Product>(productBox).values.toList();
+    categoriesNotifier.value = Hive.box<Category>(categoryBox).values.toList();
   }
 
-  Future<void> addProduct(Product newProduct) async {
-    var box = await Hive.openBox<Product>('products');
-    await box.add(newProduct);
-    // The UI will automatically reflect changes via ValueListenableBuilder
+  static Future<void> addProduct(Product product) async {
+    var box = Hive.box<Product>(productBox);
+    await box.put(product.id, product);
+    getAllProducts();
+    productsNotifier.notifyListeners();
   }
 
-  /// Read all products
-  static Future<List<Product>> getAllProducts() async {
-    final box = await _openBox();
-    return box.values.toList();
+  static Future<void> updateProduct(
+      String productId, Product updatedProduct) async {
+    var box = Hive.box<Product>(productBox);
+    await box.put(productId, updatedProduct);
+    getAllProducts();
+    productsNotifier.notifyListeners();
   }
 
-  /// Read a single product by ID
-  static Future<Product?> getProductById(String code) async {
-    final box = await _openBox();
-    return box.get(code);
+  static Future<void> getAllProducts() async {
+    var box = Hive.box<Product>(productBox);
+    productsNotifier.value = box.values.toList();
+    productsNotifier.notifyListeners();
   }
 
-  /// Update a product
-  Future<void> updateProduct(String key, Product updatedProduct) async {
-    final box = await Hive.openBox<Product>('products');
-    await box.put(key, updatedProduct);
+  static Future<void> deleteProduct(String productId) async {
+    var box = Hive.box<Product>(productBox);
+    await box.delete(productId);
+    getAllProducts();
+    productsNotifier.notifyListeners();
   }
 
-  /// Delete product
-  Future<void> deleteProduct(int index) async {
-    final box = await Hive.openBox<Product>('products');
-    await box.deleteAt(index);
-    // UI will automatically reflect changes via ValueListenableBuilder
+/**
+ * * Categroy CRUD Operations
+ */
+  static Future<void> addCategory(Category category) async {
+    var box = Hive.box<Category>(categoryBox);
+    await box.put(category.id, category);
+    categoriesNotifier.value = box.values.toList();
+    categoriesNotifier.notifyListeners();
   }
 
-  /// Delete all products
-  static Future<void> deleteAllProducts() async {
-    final box = await _openBox();
-    await box.clear();
+  static Future<void> updateCategory(
+      String categoryId, Category updatedCategory) async {
+    var box = Hive.box<Category>(categoryBox);
+    await box.put(categoryId, updatedCategory);
+    categoriesNotifier.value = box.values.toList();
+    categoriesNotifier.notifyListeners();
+  }
+
+  static Future<void> getAllCategories() async {
+    var box = Hive.box<Category>(categoryBox);
+    categoriesNotifier.value = box.values.toList();
+    categoriesNotifier.notifyListeners();
+  }
+
+  static Future<void> deleteCategory(String categoryId) async {
+    var box = Hive.box<Category>(categoryBox);
+    await box.delete(categoryId);
+    categoriesNotifier.value = box.values.toList();
+    categoriesNotifier.notifyListeners();
   }
 }

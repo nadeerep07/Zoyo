@@ -8,7 +8,10 @@ class Category extends HiveObject {
   String name;
 
   @HiveField(1)
-  String imagePath;
+  String? imagePath;
 
-  Category({required this.name, required this.imagePath});
+  @HiveField(2)
+  String id;
+
+  Category({required this.name, this.imagePath, required this.id});
 }
