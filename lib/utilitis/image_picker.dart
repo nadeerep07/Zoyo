@@ -21,6 +21,6 @@ class ImagePickerHelper {
   /// Pick multiple images from the gallery
   Future<List<File>> pickMultipleImages() async {
     final List<XFile> pickedFiles = await _picker.pickMultiImage();
-    return pickedFiles?.map((file) => File(file.path)).toList() ?? [];
+    return pickedFiles.map((file) => File(file.path)).toList();
   }
 }

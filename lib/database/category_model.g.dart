@@ -18,7 +18,7 @@ class CategoryAdapter extends TypeAdapter<Category> {
     };
     return Category(
       name: fields[0] as String,
-      imagePath: fields[1] as String?,
+      imagePath: fields[1] as String,
       id: fields[2] as String,
     );
   }

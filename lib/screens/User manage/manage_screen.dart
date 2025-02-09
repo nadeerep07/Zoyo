@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/AddEdit/Category%20Section/add_category.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/AdeedStock/Product_screen.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/purchase_screen.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/settings.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/share_app.dart';
+import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/NavigatingScreens/added_product_screen.dart';
+import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/Product%20section/product_add_edit.dart';
+import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/category%20section/category_screen.dart';
 import 'package:zoyo_bathware/services/app_colors.dart';
 
 class ManageScreen extends StatelessWidget {
@@ -82,12 +80,12 @@ class ManageScreen extends StatelessWidget {
                 context, Icons.category, " Category", CategoryScreen()),
             _buildManageItem(
                 context, Icons.inventory_2, "Product", ProductScreen()),
-            _buildManageItem(context, Icons.history, "Purchase History",
-                PurchaseScreen()), // Optional
-            _buildManageItem(
-                context, Icons.share, "Share App", ShareApp()), // Optional
-            _buildManageItem(
-                context, Icons.settings, "Settings", Settings()), // Optional
+            // _buildManageItem(context, Icons.history, "Purchase History",
+            //     PurchaseScreen()), // Optional
+            // _buildManageItem(
+            //     context, Icons.share, "Share App", ShareApp()), // Optional
+            // _buildManageItem(
+            //     context, Icons.settings, "Settings", Settings()), // Optional
           ],
         ),
       ),

@@ -1,84 +1,74 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:zoyo_bathware/database/category_model.dart';
 import 'package:zoyo_bathware/database/product_model.dart';
 
-class DatabaseHelper {
+class ProductDatabaseHelper {
   static const String productBox = 'products';
-  static const String categoryBox = 'categories';
-
+  static late Box<Product> _productBox;
   static final ValueNotifier<List<Product>> productsNotifier =
       ValueNotifier([]);
-  static final ValueNotifier<List<Category>> categoriesNotifier =
-      ValueNotifier([]);
 
-  static Future<void> openBoxes() async {
-    if (!Hive.isBoxOpen(productBox)) {
-      await Hive.openBox<Product>(productBox);
+  /// Initialize Hive Boxes
+  static Future<void> init() async {
+    try {
+      if (!Hive.isBoxOpen(productBox)) {
+        _productBox = await Hive.openBox<Product>(productBox);
+      } else {
+        _productBox = Hive.box<Product>(productBox);
+      }
+      await getAllProducts();
+    } catch (e) {
+      log('Error initializing boxes: $e');
     }
-    if (!Hive.isBoxOpen(categoryBox)) {
-      await Hive.openBox<Category>(categoryBox);
-    }
-    productsNotifier.value = Hive.box<Product>(productBox).values.toList();
-    categoriesNotifier.value = Hive.box<Category>(categoryBox).values.toList();
   }
 
+  /// Check if Boxes are Open
+  static bool get isInitialized => Hive.isBoxOpen(productBox);
+
+  /// Add Product
   static Future<void> addProduct(Product product) async {
-    var box = Hive.box<Product>(productBox);
-    await box.put(product.id, product);
-    getAllProducts();
-    productsNotifier.notifyListeners();
+    if (!isInitialized) await init();
+
+    try {
+      await _productBox.put(product.id, product);
+      await getAllProducts();
+    } catch (e) {
+      log('Error adding product: $e');
+    }
   }
 
+  /// Get All Products
+  static Future<void> getAllProducts() async {
+    if (!isInitialized) await init();
+    try {
+      productsNotifier.value = _productBox.values.toList();
+      productsNotifier.notifyListeners();
+    } catch (e) {
+      log('Error fetching products: $e');
+    }
+  }
+
+  /// Update Product
   static Future<void> updateProduct(
       String productId, Product updatedProduct) async {
-    var box = Hive.box<Product>(productBox);
-    await box.put(productId, updatedProduct);
-    getAllProducts();
-    productsNotifier.notifyListeners();
+    if (!isInitialized) await init();
+    try {
+      await _productBox.put(productId, updatedProduct);
+      await getAllProducts();
+    } catch (e) {
+      log('Error updating product: $e');
+    }
   }
 
-  static Future<void> getAllProducts() async {
-    var box = Hive.box<Product>(productBox);
-    productsNotifier.value = box.values.toList();
-    productsNotifier.notifyListeners();
-  }
-
+  /// Delete Product
   static Future<void> deleteProduct(String productId) async {
-    var box = Hive.box<Product>(productBox);
-    await box.delete(productId);
-    getAllProducts();
-    productsNotifier.notifyListeners();
-  }
-
-/**
- * * Categroy CRUD Operations
- */
-  static Future<void> addCategory(Category category) async {
-    var box = Hive.box<Category>(categoryBox);
-    await box.put(category.id, category);
-    categoriesNotifier.value = box.values.toList();
-    categoriesNotifier.notifyListeners();
-  }
-
-  static Future<void> updateCategory(
-      String categoryId, Category updatedCategory) async {
-    var box = Hive.box<Category>(categoryBox);
-    await box.put(categoryId, updatedCategory);
-    categoriesNotifier.value = box.values.toList();
-    categoriesNotifier.notifyListeners();
-  }
-
-  static Future<void> getAllCategories() async {
-    var box = Hive.box<Category>(categoryBox);
-    categoriesNotifier.value = box.values.toList();
-    categoriesNotifier.notifyListeners();
-  }
-
-  static Future<void> deleteCategory(String categoryId) async {
-    var box = Hive.box<Category>(categoryBox);
-    await box.delete(categoryId);
-    categoriesNotifier.value = box.values.toList();
-    categoriesNotifier.notifyListeners();
+    if (!isInitialized) await init();
+    try {
+      await _productBox.delete(productId);
+      await getAllProducts();
+    } catch (e) {
+      log('Error deleting product: $e');
+    }
   }
 }

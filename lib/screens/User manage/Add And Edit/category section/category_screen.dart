@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:zoyo_bathware/database/CrudOperations/category_db.dart';
 import 'package:zoyo_bathware/database/category_model.dart';
-import 'package:zoyo_bathware/database/CrudOperations/data_services.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/AddEdit/Category%20Section/show_dialog_category.dart';
+import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/category%20section/category_dialog.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -19,11 +19,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     super.initState();
     openHiveBox();
-    DatabaseHelper.getAllCategories();
+    CategoryDatabaseHelper.getAllCategories();
   }
 
-  void openHiveBox() {
-    categoryBox = Hive.box<Category>(DatabaseHelper.categoryBox);
+  void openHiveBox() async {
+    categoryBox = await Hive.box<Category>(CategoryDatabaseHelper.categoryBox);
   }
 
   void showCategoryDialog({Category? category, int? index}) {
@@ -35,10 +35,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    CategoryDatabaseHelper.getAllCategories;
     return Scaffold(
       appBar: AppBar(title: const Text("Categories")),
       body: ValueListenableBuilder<List<Category>>(
-        valueListenable: DatabaseHelper.categoriesNotifier,
+        valueListenable: CategoryDatabaseHelper.categoriesNotifier,
         builder: (context, categories, _) {
           if (categories.isEmpty) {
             return const Center(child: Text("No categories added"));
@@ -48,13 +49,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
             itemBuilder: (context, index) {
               final category = categories[index];
               return ListTile(
-                leading: (category.imagePath != null &&
-                        category.imagePath!.isNotEmpty)
-                    ? Image.file(
-                        File(category.imagePath ?? 'default_image_path'),
-                        width: 50,
-                        height: 50)
-                    : const Icon(Icons.image, size: 50),
+                leading:
+                    Image.file(File(category.imagePath), width: 50, height: 50),
                 title: Text(category.name),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -67,7 +63,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () =>
-                          DatabaseHelper.deleteCategory(category.id),
+                          CategoryDatabaseHelper.deleteCategory(category.id),
                     ),
                   ],
                 ),

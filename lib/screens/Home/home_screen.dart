@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:zoyo_bathware/screens/HomeScreens/bottom_navigation.dart';
-import 'package:zoyo_bathware/screens/HomeScreens/carousel_slider.dart';
-import 'package:zoyo_bathware/screens/HomeScreens/product_carousel.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/imported_screen.dart';
-import 'package:zoyo_bathware/screens/manage_screen.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/product_screen.dart';
+import 'package:zoyo_bathware/screens/Products/all_categories.dart';
+import 'package:zoyo_bathware/screens/User%20manage/manage_screen.dart';
 import 'package:zoyo_bathware/services/app_colors.dart';
 import 'package:zoyo_bathware/database/product_model.dart';
+import 'package:zoyo_bathware/utilitis/widgets/bottom_navigation.dart';
+import 'package:zoyo_bathware/utilitis/widgets/carousel_silder.dart';
+import 'package:zoyo_bathware/utilitis/widgets/product_carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,15 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProductsScreen()),
+          MaterialPageRoute(builder: (context) => AllCategories()),
         );
         break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ImportedScreen()),
-        );
-        break;
+      // case 2:
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => ImportedScreen()),
+      //   );
+      //   break;
       case 3:
         Navigator.push(
           context,
@@ -133,7 +132,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             SizedBox(height: 20),
-            // In HomeScreen's build method
             SizedBox(
               height: 200,
               child: ProductCarousel(products: products),

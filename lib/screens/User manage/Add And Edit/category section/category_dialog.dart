@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:zoyo_bathware/database/CrudOperations/category_db.dart';
 import 'package:zoyo_bathware/database/category_model.dart';
-import 'package:zoyo_bathware/screens/NavigationScreen/manageScetion/AddEdit/image_picker.dart';
-import 'package:zoyo_bathware/database/CrudOperations/data_services.dart';
+import 'package:zoyo_bathware/utilitis/image_picker.dart';
 
 class CategoryDialog extends StatefulWidget {
   final Category? category;
@@ -27,9 +27,7 @@ class CategoryDialogState extends State<CategoryDialog> {
   }
 
   Future<void> pickImage(bool fromGallery) async {
-    File? pickedImage = fromGallery
-        ? await imagePickerHelper.pickImageFromGallery()
-        : await imagePickerHelper.pickImageFromCamera();
+    File? pickedImage = await imagePickerHelper.pickImageFromGallery();
 
     if (pickedImage != null) {
       setState(() {
@@ -78,9 +76,10 @@ class CategoryDialogState extends State<CategoryDialog> {
               );
 
               if (widget.category == null) {
-                DatabaseHelper.addCategory(newCategory);
+                CategoryDatabaseHelper.addCategory(newCategory);
               } else {
-                DatabaseHelper.updateCategory(widget.category!.id, newCategory);
+                CategoryDatabaseHelper.updateCategory(
+                    widget.category!.id, newCategory);
               }
 
               Navigator.pop(context);
