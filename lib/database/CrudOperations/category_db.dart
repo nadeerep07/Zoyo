@@ -31,10 +31,8 @@ class CategoryDatabaseHelper {
     if (!Hive.isBoxOpen(categoryBox)) await init();
 
     try {
-      await _categoryBox.put(category.id, category); // Save the category
-      categoriesNotifier.value = [
-        ..._categoryBox.values
-      ]; // Update the notifier
+      await _categoryBox.put(category.id, category);
+      categoriesNotifier.value = [..._categoryBox.values];
       categoriesNotifier.notifyListeners();
     } catch (e) {
       log('Error adding category: $e');
@@ -66,13 +64,12 @@ class CategoryDatabaseHelper {
     }
   }
 
-  /// Delete Category
   static Future<void> deleteCategory(String categoryId) async {
     if (!Hive.isBoxOpen(categoryBox)) await init();
 
     try {
       await _categoryBox.delete(categoryId);
-      await getAllCategories(); // Reload the categories list
+      await getAllCategories();
     } catch (e) {
       log('Error deleting category: $e');
     }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:zoyo_bathware/database/CrudOperations/category_db.dart';
 import 'package:zoyo_bathware/database/category_model.dart';
+import 'package:zoyo_bathware/utilitis/widgets/back_botton.dart';
 
 class AllCategories extends StatefulWidget {
   const AllCategories({super.key});
@@ -23,10 +24,7 @@ class _AllCategoriesState extends State<AllCategories> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back),
-        ),
+        leading: backButton(context),
         title: const Text("All Categories"),
         centerTitle: true,
       ),
@@ -65,7 +63,6 @@ class _AllCategoriesState extends State<AllCategories> {
   }
 }
 
-/// Custom widget to display a category card
 class CategoryCard extends StatelessWidget {
   final Category category;
 
@@ -73,42 +70,45 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Display category image (if available)
-            if (category.imagePath.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.file(
-                  File(category.imagePath),
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {},
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Display category image (if available)
+              if (category.imagePath.isNotEmpty)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.file(
+                    File(category.imagePath),
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              else
+                const Icon(Icons.category, size: 60, color: Colors.grey),
+
+              const SizedBox(height: 8),
+
+              // Display category name
+              Text(
+                category.name,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-              )
-            else
-              const Icon(Icons.category, size: 60, color: Colors.grey),
-
-            const SizedBox(height: 8),
-
-            // Display category name
-            Text(
-              category.name,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

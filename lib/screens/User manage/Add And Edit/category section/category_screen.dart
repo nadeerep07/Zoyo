@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zoyo_bathware/database/CrudOperations/category_db.dart';
 import 'package:zoyo_bathware/database/category_model.dart';
 import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/category%20section/category_dialog.dart';
+import 'package:zoyo_bathware/utilitis/widgets/back_botton.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -37,7 +38,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     CategoryDatabaseHelper.getAllCategories;
     return Scaffold(
-      appBar: AppBar(title: const Text("Categories")),
+      appBar:
+          AppBar(leading: backButton(context), title: const Text("Categories")),
       body: ValueListenableBuilder<List<Category>>(
         valueListenable: CategoryDatabaseHelper.categoriesNotifier,
         builder: (context, categories, _) {

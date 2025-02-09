@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/NavigatingScreens/added_product_screen.dart';
+import 'package:zoyo_bathware/screens/User%20manage/NavigatingScreens/added_product_screen.dart';
 import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/Product%20section/product_add_edit.dart';
 import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/category%20section/category_screen.dart';
 import 'package:zoyo_bathware/services/app_colors.dart';
+import 'package:zoyo_bathware/utilitis/widgets/back_botton.dart';
 
 class ManageScreen extends StatelessWidget {
   const ManageScreen({super.key});
@@ -49,6 +50,7 @@ class ManageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: backButton(context),
         title: Text("Manage Products"),
         backgroundColor: AppColors.backgroundColor,
       ),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:zoyo_bathware/database/CrudOperations/data_services.dart';
 import 'package:zoyo_bathware/database/product_model.dart';
 import 'package:zoyo_bathware/services/app_colors.dart';
 import 'package:zoyo_bathware/database/CrudOperations/category_db.dart';
@@ -83,7 +84,7 @@ class _ProductAddEditState extends State<ProductAddEdit> {
 
       // Create or update the product
       Product product = Product(
-        id: uniqueId,
+        id: widget.isEditing ? widget.existingProduct!.id : uniqueId,
         productCode: _productCodeController.text,
         productName: _productNameController.text,
         size: _sizeController.text,
@@ -96,15 +97,12 @@ class _ProductAddEditState extends State<ProductAddEdit> {
         imagePaths: imagePaths,
       );
 
-      // Open the Hive box
-      var productBox = await Hive.openBox<Product>('products');
-
       if (widget.isEditing) {
         // Update existing product
-        await productBox.put(product.id, product);
+        await updateProduct(product.id!, product);
       } else {
         // Add new product
-        await productBox.put(uniqueId, product);
+        await addProduct(product);
       }
 
       // Show confirmation and navigate back
@@ -161,7 +159,7 @@ class _ProductAddEditState extends State<ProductAddEdit> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Display all selected images in a grid
+
                 if (selectedImages.isNotEmpty)
                   GridView.builder(
                     shrinkWrap: true,
@@ -189,6 +187,7 @@ class _ProductAddEditState extends State<ProductAddEdit> {
                 TextFormField(
                   controller: _productCodeController,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.code, color: Colors.grey),
                     labelText: 'Product Code',
                     border: OutlineInputBorder(),
                   ),
@@ -205,6 +204,7 @@ class _ProductAddEditState extends State<ProductAddEdit> {
                 TextFormField(
                   controller: _productNameController,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.shopping_bag, color: Colors.grey),
                     labelText: 'Product Name',
                     border: OutlineInputBorder(),
                   ),
@@ -237,6 +237,7 @@ class _ProductAddEditState extends State<ProductAddEdit> {
                 TextFormField(
                   controller: _typeController,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.type_specimen, color: Colors.grey),
                     labelText: 'Type',
                     border: OutlineInputBorder(),
                   ),
@@ -288,6 +289,8 @@ class _ProductAddEditState extends State<ProductAddEdit> {
                 TextFormField(
                   controller: _quantityController,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.production_quantity_limits,
+                        color: Colors.grey),
                     labelText: 'Quantity',
                     border: OutlineInputBorder(),
                   ),
@@ -339,6 +342,7 @@ class _ProductAddEditState extends State<ProductAddEdit> {
                 TextFormField(
                   controller: _descriptionController,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.description, color: Colors.grey),
                     labelText: 'Description',
                     border: OutlineInputBorder(),
                   ),

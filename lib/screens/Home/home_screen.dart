@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:zoyo_bathware/screens/Cart%20Section/CArt_screen.dart';
+import 'package:zoyo_bathware/screens/Home/search_screen.dart';
 import 'package:zoyo_bathware/screens/Products/all_categories.dart';
 import 'package:zoyo_bathware/screens/User%20manage/manage_screen.dart';
 import 'package:zoyo_bathware/services/app_colors.dart';
@@ -81,7 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchScreen()));
+              },
               icon: Icon(
                 Icons.search,
                 size: 32,
@@ -126,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {},
                   child: Text(
                     'View All',
-                    style: TextStyle(color: AppColors.primaryColor),
+                    style: TextStyle(color: AppColors.buttonColor),
                   ),
                 ),
               ],
@@ -141,7 +146,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Navigate to cart screen
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CartScreen()));
         },
         backgroundColor: Colors.blue,
         child: Icon(Icons.shopping_cart, color: Colors.white),

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zoyo_bathware/database/CrudOperations/data_services.dart';
 import 'package:zoyo_bathware/database/product_model.dart';
 import 'package:zoyo_bathware/screens/User%20manage/Add%20And%20Edit/Product%20section/product_add_edit.dart';
+import 'package:zoyo_bathware/utilitis/widgets/back_botton.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -14,9 +16,9 @@ class ProductScreen extends StatefulWidget {
 }
 
 class ProductScreenState extends State<ProductScreen> {
-  late Box<Product> productBox; // Late initialization of productBox
+  late Box<Product> productBox;
   final TextEditingController _searchController = TextEditingController();
-  bool isBoxOpened = false; // Track whether the box is opened
+  bool isBoxOpened = false;
 
   @override
   void initState() {
@@ -28,14 +30,13 @@ class ProductScreenState extends State<ProductScreen> {
   Future<void> _openBox() async {
     try {
       productBox = await Hive.openBox<Product>('products');
-      if (!mounted) return; // Ensure widget is still active
+      if (!mounted) return;
       setState(() {
         isBoxOpened = true;
       });
-      // Once box is opened, fetch the products safely
-      ProductDatabaseHelper.getAllProducts();
+      getAllProducts();
     } catch (e) {
-      print("Error opening box: $e");
+      log("Error opening box: $e");
     }
   }
 
@@ -60,13 +61,13 @@ class ProductScreenState extends State<ProductScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: backButton(context),
         title: const Text("Added Stock"),
         backgroundColor: Colors.blueAccent,
         elevation: 0,
       ),
       body: Column(
         children: [
-          // Modern Search Bar
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -94,7 +95,7 @@ class ProductScreenState extends State<ProductScreen> {
           ),
           Expanded(
             child: ValueListenableBuilder<List<Product>>(
-              valueListenable: ProductDatabaseHelper.productsNotifier,
+              valueListenable: productsNotifier,
               builder: (context, List<Product> box, _) {
                 final query = _searchController.text.trim().toLowerCase();
                 final products = box.where((product) {
@@ -205,7 +206,7 @@ class ProductScreenState extends State<ProductScreen> {
                                   );
                                   return;
                                 }
-                                productBox.delete(product.id);
+                                deleteProduct(product.id!);
                               },
                             ),
                           ],
