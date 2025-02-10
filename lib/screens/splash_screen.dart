@@ -43,9 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 bottom: 20,
                 child: Center(
                   child: Text(
-                    '''Powered by
-
-wwww.zoyobathware.com''',
+                    '''Powered by\nwwww.zoyobathware.com''',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFF00008B),

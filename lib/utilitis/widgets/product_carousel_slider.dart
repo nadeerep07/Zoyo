@@ -1,4 +1,3 @@
-// product_carousel.dart
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:zoyo_bathware/database/product_model.dart';
@@ -20,7 +19,7 @@ class ProductCarousel extends StatelessWidget {
           enlargeCenterPage: true,
           aspectRatio: 16 / 9,
           viewportFraction: 0.5,
-          autoPlay: true,
+          autoPlay: false,
         ),
         items: products.map((product) {
           return Card(

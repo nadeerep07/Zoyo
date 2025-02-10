@@ -1,4 +1,3 @@
-// bottom_navigation_bar.dart
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -14,14 +13,15 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      shape: CircularNotchedRectangle(),
+      shape:
+          CircularNotchedRectangle(), // for circle in center of navigation bar
       notchMargin: 8.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildNavItem(Icons.home, "Home", 0),
           _buildNavItem(Icons.inventory_2, "Products", 1),
-          SizedBox(width: 50), // Space for FAB
+          SizedBox(width: 50),
           _buildNavItem(Icons.public, "Imported", 2),
           _buildNavItem(Icons.settings, "Manage", 3),
         ],

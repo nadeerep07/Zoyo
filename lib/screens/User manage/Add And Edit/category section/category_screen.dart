@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zoyo_bathware/database/CrudOperations/category_db.dart';
@@ -15,18 +16,24 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   late Box<Category> categoryBox;
+  bool isBoxOpen = false;
 
   @override
   void initState() {
     super.initState();
     openHiveBox();
-    CategoryDatabaseHelper.getAllCategories();
   }
 
-  void openHiveBox() async {
-    categoryBox = await Hive.box<Category>(CategoryDatabaseHelper.categoryBox);
+  // Open the Hive box and update the state accordingly
+  Future<void> openHiveBox() async {
+    categoryBox = await Hive.openBox<Category>('categoryBox');
+    setState(() {
+      isBoxOpen = true;
+    });
+    getAllCategories(); // Fetch categories after box is opened
   }
 
+  // Show the category dialog
   void showCategoryDialog({Category? category, int? index}) {
     showDialog(
       context: context,
@@ -36,16 +43,23 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CategoryDatabaseHelper.getAllCategories;
+    // Check if the box is open before trying to build the UI
+    if (!isBoxOpen) {
+      return const Center(
+          child:
+              CircularProgressIndicator()); // Show loading indicator until box is opened
+    }
+
     return Scaffold(
       appBar:
           AppBar(leading: backButton(context), title: const Text("Categories")),
       body: ValueListenableBuilder<List<Category>>(
-        valueListenable: CategoryDatabaseHelper.categoriesNotifier,
+        valueListenable: categoriesNotifier,
         builder: (context, categories, _) {
           if (categories.isEmpty) {
             return const Center(child: Text("No categories added"));
           }
+
           return ListView.builder(
             itemCount: categories.length,
             itemBuilder: (context, index) {
@@ -64,8 +78,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () =>
-                          CategoryDatabaseHelper.deleteCategory(category.id),
+                      onPressed: () => deleteCategory(category.id),
                     ),
                   ],
                 ),

@@ -154,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavigationBar(
+        //bottom navigation in utilities/widgets
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
       ),

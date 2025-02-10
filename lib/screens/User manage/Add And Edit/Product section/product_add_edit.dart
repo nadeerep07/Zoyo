@@ -42,7 +42,7 @@ class _ProductAddEditState extends State<ProductAddEdit> {
   @override
   void initState() {
     super.initState();
-    CategoryDatabaseHelper.getAllCategories();
+    getAllCategories();
     if (widget.isEditing && widget.existingProduct != null) {
       // Populate form fields with existing product data
       _productCodeController.text = widget.existingProduct!.productCode;
@@ -252,7 +252,7 @@ class _ProductAddEditState extends State<ProductAddEdit> {
 
                 // Category Dropdown
                 ValueListenableBuilder<List<Category>>(
-                  valueListenable: CategoryDatabaseHelper.categoriesNotifier,
+                  valueListenable: categoriesNotifier,
                   builder: (context, categories, _) {
                     if (categories.isEmpty) {
                       return const Text('No categories available');

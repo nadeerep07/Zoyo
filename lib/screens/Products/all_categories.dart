@@ -16,8 +16,8 @@ class _AllCategoriesState extends State<AllCategories> {
   @override
   void initState() {
     super.initState();
-    // Fetch categories when the widget initializes
-    CategoryDatabaseHelper.getAllCategories();
+    //get categories
+    getAllCategories();
   }
 
   @override
@@ -31,7 +31,7 @@ class _AllCategoriesState extends State<AllCategories> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ValueListenableBuilder<List<Category>>(
-          valueListenable: CategoryDatabaseHelper.categoriesNotifier,
+          valueListenable: categoriesNotifier,
           builder: (context, categories, child) {
             if (categories.isEmpty) {
               return const Center(
